@@ -15,14 +15,15 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-from django.conf import settings
+
 from django.utils.importlib import import_module
 import json
 import sys
+import re
 from os import path
 
 
-def get_app_paths():
+def get_app_paths(settings):
     """
     Return all paths defined in settings
     """
@@ -47,7 +48,7 @@ def list_indexes_create(fpath):
     """
     indexes = []
 
-    pgpath = path.join(fpath, 'pgindexor_create.json')
+    pgpath = path.join(fpath, 'dbindex_create.json')
     if path.isfile(pgpath):
         with open(pgpath) as json_data:
             indexes = json.load(json_data)
@@ -62,7 +63,7 @@ def list_indexes_drop(fpath):
     """
     indexes = []
 
-    pgpath = path.join(fpath, 'pgindexor_drop.json')
+    pgpath = path.join(fpath, 'dbindex_drop.json')
     if path.isfile(pgpath):
         with open(pgpath) as json_data:
             indexes = json.load(json_data)
@@ -87,13 +88,13 @@ def sql_create_from_json(index):
                     sql_tablespace(index),
                     sql_predicat(index),
                     ";"])
-    return cmd
+    return cmd.replace("  ", " ")
 
 def sql_drop_from_json(index):
     """
     Read indexes
     """
-    cmd = " ".join(["DROP", index['name'], ";"])
+    cmd = " ".join(["DROP INDEX", index['name'], ";"])
     return cmd
 
 

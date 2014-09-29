@@ -19,7 +19,11 @@ from django.conf import settings
 from django.utils.importlib import import_module
 import json
 import sys
+import re
 from os import path
+
+FILENAME_CREATE = 'dbindex_create.json'
+FILENAME_DROP = 'dbindex_drop.json'
 
 
 def get_app_paths():
@@ -49,7 +53,7 @@ def list_indexes_create(fpath):
     """
     indexes = []
 
-    pgpath = path.join(fpath, 'pgindexor_create.json')
+    pgpath = path.join(fpath, FILENAME_CREATE)
     if path.isfile(pgpath):
         with open(pgpath) as json_data:
             indexes = json.load(json_data)
@@ -65,7 +69,7 @@ def list_indexes_drop(fpath):
     """
     indexes = []
 
-    pgpath = path.join(fpath, 'pgindexor_drop.json')
+    pgpath = path.join(fpath, FILENAME_DROP)
     if path.isfile(pgpath):
         with open(pgpath) as json_data:
             indexes = json.load(json_data)
@@ -89,16 +93,18 @@ def sql_create_from_json(index):
                     sql_using(index),
                     sql_columns(index),
                     sql_tablespace(index),
-                    sql_predicat(index),
-                    ";"])
-    return cmd
+                    sql_predicat(index)
+                    ])
+    strc = re.sub('\s+', ' ', cmd)
+    return re.sub('\s$', '', strc)
 
 
 def sql_drop_from_json(index):
     """
     Read indexes
     """
-    cmd = " ".join(["DROP", index['name'], ";"])
+    cmd = " ".join(["DROP INDEX",
+                    index['name']])
     return cmd
 
 

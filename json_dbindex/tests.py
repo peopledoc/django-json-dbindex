@@ -1,19 +1,11 @@
 """
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
+django-json-dbindex tests
 """
 import util
 from django.test import TestCase
 
 
 class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
 
     def test_sql_simple(self):
         """
@@ -36,7 +28,79 @@ class SimpleTest(TestCase):
         """
         Build the column part of index
         """
-        idx = {'using': 'bar'},
+        idx = {'using': 'btree'}
 
-        res = "using bar"
+        res = "USING btree"
         self.assertEqual(util.sql_using(idx), res)
+
+    def test_sql_predicat(self):
+        """
+        Build the column part of index
+        """
+        idx = {'using': 'btree',
+               'predicat': 'foo > 3'}
+
+        res = "WHERE foo > 3"
+        self.assertEqual(util.sql_predicat(idx), res)
+
+    def test_sql_tablespace(self):
+        """
+        Build the column part of index
+        """
+        idx = {'tablespace': 'ssd1'}
+
+        res = "TABLESPACE ssd1"
+        self.assertEqual(util.sql_tablespace(idx), res)
+
+    def test_sql_unique(self):
+        """
+        Build the column part of index
+        """
+        idx = {'unique': True}
+
+        res = "UNIQUE"
+        self.assertEqual(util.sql_unique(idx), res)
+
+    def test_sql_create_from_json(self):
+        """
+        Build the column part of index
+        """
+        idx = {'name': 'compo1',
+               'table': 'editors',
+               'columns': ['id', 'name'],
+               'tablespace': 'ssd1'}
+
+        res = " ".join(["CREATE INDEX CONCURRENTLY compo1",
+                        "ON editors (id,name)",
+                        "TABLESPACE ssd1"])
+        self.assertEqual(util.sql_create_from_json(idx), res)
+
+    def test_sql_drop_from_json(self):
+        """
+        Build the column part of index
+        """
+        idx = {'name': 'compo1',
+               'table': 'editors',
+               'columns': ['id', 'name'],
+               'tablespace': 'ssd1'}
+
+        cmd = util.sql_drop_from_json(idx)
+
+        res = 'DROP INDEX compo1'
+
+        self.assertEqual(cmd, res)
+
+    def test_sql_create_from_json_full(self):
+        """
+        Build the column part of index
+        """
+        idx = {'name': 'compo1',
+               'table': 'editors',
+               'unique': True,
+               'columns': ['id', 'name'],
+               'tablespace': 'ssd1'}
+
+        res = " ".join(["CREATE UNIQUE INDEX CONCURRENTLY compo1",
+                        "ON editors (id,name)",
+                        "TABLESPACE ssd1"])
+        self.assertEqual(util.sql_create_from_json(idx), res)

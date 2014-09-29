@@ -35,11 +35,13 @@ def get_app_paths():
             continue
     return paths
 
+
 def list_indexes(fpath):
     """
     List ALL indexes
     """
     return list_indexes_drop(fpath) + list_indexes_create(fpath)
+
 
 def list_indexes_create(fpath):
     """
@@ -56,6 +58,7 @@ def list_indexes_create(fpath):
             json_data.close()
     return indexes
 
+
 def list_indexes_drop(fpath):
     """
     Read indexes
@@ -70,6 +73,7 @@ def list_indexes_drop(fpath):
                 index['cmd'] = sql_drop_from_json(index)
             json_data.close()
     return indexes
+
 
 def sql_create_from_json(index):
     """
@@ -88,6 +92,7 @@ def sql_create_from_json(index):
                     sql_predicat(index),
                     ";"])
     return cmd
+
 
 def sql_drop_from_json(index):
     """
@@ -109,6 +114,7 @@ def sql_unique(index):
             res = "UNIQUE"
     return res
 
+
 def sql_concurrently(index):
     """
     Is the index concurrently or not
@@ -117,9 +123,10 @@ def sql_concurrently(index):
     """
     res = "CONCURRENTLY"
     if "concurrently" in index:
-        if index["concurrently"] == False:
+        if index["concurrently"] is False:
             res = ""
     return res
+
 
 def sql_columns(index):
     """
@@ -137,6 +144,7 @@ def sql_using(index):
     return : string
     """
     return sql_simple(index, "using", "USING")
+
 
 def sql_predicat(index):
     """

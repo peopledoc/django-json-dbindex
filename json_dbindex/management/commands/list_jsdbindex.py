@@ -16,17 +16,9 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-
-import sys
-import os
-import imp
 from django.core.management.base import BaseCommand
 from optparse import make_option
 from django.conf import settings
-from django.db import connection
-from django.utils.importlib import import_module
-from django.db import connection
-import logging
 from ... import util
 
 
@@ -53,4 +45,3 @@ class Command(BaseCommand):
                                                    path)
             for index in indexes:
                 print index['cmd']
-

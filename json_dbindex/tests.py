@@ -1,6 +1,7 @@
 """
 django-json-dbindex tests
 """
+import os
 import util
 from django.test import TestCase
 
@@ -104,3 +105,42 @@ class SimpleTest(TestCase):
                         "ON editors (id,name)",
                         "TABLESPACE ssd1"])
         self.assertEqual(util.sql_create_from_json(idx), res)
+
+    def test_list_index_create(self):
+        """
+        List index to be created
+        """
+        fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             '..',
+                             'demo',
+                             'django_json_dbindex_demo',
+                             'foobar')
+        print fpath
+        res = util.list_indexes_create(fpath)
+        self.assertEqual(len(res), 1)
+
+    def test_list_index_drop(self):
+        """
+        List index to be droped
+        """
+        fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             '..',
+                             'demo',
+                             'django_json_dbindex_demo',
+                             'foobar')
+        print fpath
+        res = util.list_indexes_drop(fpath)
+        self.assertEqual(len(res), 2)
+
+    def test_list_indexes(self):
+        """
+        List all indexes
+        """
+        fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             '..',
+                             'demo',
+                             'django_json_dbindex_demo',
+                             'foobar')
+        print fpath
+        res = util.list_indexes(fpath)
+        self.assertEqual(len(res), 3)

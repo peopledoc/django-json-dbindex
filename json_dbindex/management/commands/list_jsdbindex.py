@@ -17,31 +17,23 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 from django.core.management.base import BaseCommand
-from optparse import make_option
 from django.conf import settings
 from ... import util
 
 
 class Command(BaseCommand):
-    help = 'Import datas'
-    option_list = BaseCommand.option_list + (
-        make_option("-n",
-                    "--nbvalues",
-                    dest="nbvalues",
-                    type="int",
-                    help="number of values to input",
-                    default=10),
-        )
+    help = 'List index'
 
     def handle(self, *args, **options):
-        """
+        """List indexes command on stdout
         Read the table book without TextField
         """
         paths = util.get_app_paths(settings)
+
         for path in paths:
             indexes = util.list_indexes(path)
             if len(indexes):
-                print "-- Found %d index in %s" % (len(indexes),
-                                                   path)
+                self.stdout.write("-- Found %d index in %s\n" % (len(indexes),
+                                                                 path))
             for index in indexes:
-                print index['cmd']
+                self.stdout.write("%s\n" % (index['cmd']))

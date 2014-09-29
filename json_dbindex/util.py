@@ -15,18 +15,18 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-from django.conf import settings
 from django.utils.importlib import import_module
 import json
 import sys
 import re
+import logging
 from os import path
 
 FILENAME_CREATE = 'dbindex_create.json'
 FILENAME_DROP = 'dbindex_drop.json'
 
 
-def get_app_paths():
+def get_app_paths(settings):
     """
     Return all paths defined in settings
     """
@@ -50,10 +50,13 @@ def list_indexes(fpath):
 def list_indexes_create(fpath):
     """
     Read indexes
+
+    return (array)
     """
     indexes = []
 
     pgpath = path.join(fpath, FILENAME_CREATE)
+    logging.debug(pgpath)
     if path.isfile(pgpath):
         with open(pgpath) as json_data:
             indexes = json.load(json_data)

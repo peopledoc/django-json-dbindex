@@ -119,7 +119,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'json_dbindex'
+    'json_dbindex',
+    'foobar'
 )
 
 # A sample logging configuration. The only tangible logging

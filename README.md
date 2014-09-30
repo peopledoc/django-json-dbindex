@@ -34,14 +34,14 @@ Create indexes
 Create a file in you app directory called `dbindex_create.json` with
 following contents
 
-<- language: json ->
+```javascript
 
 [{"name": "django_site_composite_idx"},
   "table": "django_site",
   "column": ["domain","name"],
   "predicat": "WHERE id > 1000",
   "unique": yes}]
-
+```
 
 Trying to create an existing index will not generate an error, only a
 logging at level notice will be raised.

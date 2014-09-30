@@ -43,7 +43,7 @@ def execute_raw(sql):
         cursor.close()
         return 0
     except:
-        logging.error('Cant execute %s' % sql)
+        logging.error('Cant execute %s' % (sql))
         return 1
 
 
@@ -58,7 +58,8 @@ def drop_index(index):
         res = execute_raw(index['cmd'])
         logging.info("%s dropped" % index['name'])
     else:
-        logging.notice("%s doesn't exists" % index['name'])
+        res = 1
+        logging.info("%s doesn't exists" % index['name'])
     return res
 
 
@@ -69,7 +70,7 @@ def create_index(index):
     index (dict) : index description
     """
     if index_exists(index):
-        logging.notice("%s still exists" % index['name'])
+        logging.info("%s still exists" % index['name'])
     else:
         logging.info("Will create %s" % index['name'])
         res = execute_raw(index['cmd'])

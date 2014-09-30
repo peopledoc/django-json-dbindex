@@ -13,8 +13,17 @@ class SimpleTest(TestCase):
         Return of sql_simple
         """
         idx = {'foo': 'bar'}
-        res = "foobar bar"
-        self.assertEqual(util.sql_simple(idx, 'foo', 'foobar'), res)
+        res = "FOOBAR bar"
+        self.assertEqual(util.sql_simple(idx, 'foo', 'FOOBAR'), res)
+
+    def test_sql_simple_nokey(self):
+        """
+        The looking key is absent
+        """
+        idx = {'key': 'bar'}
+        res = util.sql_simple(idx, 'foo', 'FOOBAR')
+        attend = ""
+        self.assertEqual(res, attend)
 
     def test_sql_columns(self):
         """

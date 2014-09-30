@@ -24,7 +24,7 @@ def index_exists(index):
     """Execute raw sql
     """
     cursor = connection.cursor()
-    qry = "SELECT count(indexname) FROM pg_indexes WHERE indexname = %s"
+    qry = "SELECT COUNT(indexname) FROM pg_indexes WHERE indexname = %s"
     cursor.execute(qry, [index['name']])
     row = cursor.fetchone()
     cursor.close()

@@ -29,13 +29,44 @@ FILENAME_CREATE = 'dbindex_create.json'
 FILENAME_DROP = 'dbindex_drop.json'
 
 
+def command_check():
+    """
+    Check indexes
+    """
+    for fpath in get_app_paths():
+        for index in list_indexes_create(fpath):
+            if pgcommands.index_exists(index):
+                print "OK %s is present on %s" % (index['name'],
+                                                  index['table'])
+            else:
+                print "KO %s is missing (must be present)" % (index['name'])
+
+        for index in list_indexes_drop(fpath):
+            if pgcommands.index_exists(index):
+                print "KO %s is present (must be dropped)" % (index['name'])
+            else:
+                print "OK %s is missing" % (index['name'])
+
+
+def command_list():
+    """
+    List all indexes
+    """
+    for fpath in get_app_paths():
+        indexes = list_indexes(fpath)
+        if len(indexes):
+            sys.stdout.write("-- Found %d index in %s\n" % (len(indexes),
+                                                            fpath))
+            for index in indexes:
+                sys.stdout.write("%s\n" % (index['cmd']))
+
+
 def command_drop():
     """
     The drop command
     """
-    fpaths = get_app_paths()
     # loop on apps
-    for fpath in fpaths:
+    for fpath in get_app_paths():
         # loop on indexes
         for index in list_indexes_drop(fpath):
             pgcommands.drop_index(index)
@@ -45,8 +76,7 @@ def command_create():
     """
     Create all indexes
     """
-    fpaths = get_app_paths(settings)
-    for fpath in fpaths:
+    for fpath in get_app_paths():
         for index in list_indexes_create(fpath):
             pgcommands.create_index(index)
 

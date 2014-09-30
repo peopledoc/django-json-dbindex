@@ -40,7 +40,7 @@ following contents
   "table": "django_site",
   "columns": ["domain","name"],
   "predicat": "WHERE id > 1000",
-  "unique": yes,
+  "unique": true,
   "concurrently": false,
   "using": "btree",     
   "tablespace": "speedssd"}]

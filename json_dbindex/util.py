@@ -2,42 +2,69 @@
 #
 # Copyright (c) 2014 Rodolphe Quiédeville <rodolphe@quiedeville.org>
 #
-#     This program is free software: you can redistribute it and/or modify
-#     it under the terms of the GNU General Public License as published by
-#     the Free Software Foundation, either version 3 of the License, or
-#     (at your option) any later version.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
 #
-#     This program is distributed in the hope that it will be useful,
-#     but WITHOUT ANY WARRANTY; without even the implied warranty of
-#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#     GNU General Public License for more details.
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
 #
-#     You should have received a copy of the GNU General Public License
-#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of django-json-dbindex nor the names of its contributors
+#   may be used to endorse or promote products derived from this software
+#   without specific prior written permission.
 #
 from django.utils.importlib import import_module
+from django.conf import settings
 import json
 import sys
 import re
 import logging
+import pgcommands
 from os import path
 
 FILENAME_CREATE = 'dbindex_create.json'
 FILENAME_DROP = 'dbindex_drop.json'
 
 
-def get_app_paths(settings):
+def command_drop():
+    """
+    The drop command
+    """
+    fpaths = get_app_paths()
+    # loop on apps
+    for fpath in fpaths:
+        # loop on indexes
+        for index in list_indexes_drop(fpath):
+            pgcommands.drop_index(index)
+
+
+def command_create():
+    """
+    Create all indexes
+    """
+    fpaths = get_app_paths(settings)
+    for fpath in fpaths:
+        for index in list_indexes_create(fpath):
+            pgcommands.create_index(index)
+
+
+def get_app_paths():
     """
     Return all paths defined in settings
     """
-    paths = []
+    fpaths = []
     for app in settings.INSTALLED_APPS:
         try:
             import_module(app)
-            paths.append(sys.modules[app].__path__[0])
+            fpaths.append(sys.modules[app].__path__[0])
         except AttributeError:
+            msg = "Can't load module %s"
+            logging.error(msg % app)
             continue
-    return paths
+    return fpaths
 
 
 def list_indexes(fpath):

@@ -17,22 +17,13 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 from django.core.management.base import BaseCommand
-from optparse import make_option
 from django.conf import settings
-from django.db import connection
 from ... import util
+from ... import pgcommands
 
 
 class Command(BaseCommand):
     help = 'Import datas'
-    option_list = BaseCommand.option_list + (
-        make_option("-n",
-                    "--nbvalues",
-                    dest="nbvalues",
-                    type="int",
-                    help="number of values to input",
-                    default=10),
-        )
 
     def handle(self, *args, **options):
         """
@@ -40,25 +31,15 @@ class Command(BaseCommand):
         """
         paths = util.get_app_paths(settings)
         for path in paths:
-
             for index in util.list_indexes_create(path):
-                if self.index_exists(index):
+                if pgcommands.index_exists(index):
                     print "OK %s is present on %s" % (index['name'],
                                                       index['table'])
                 else:
                     print "KO %s is missing" % (index['name'])
 
             for index in util.list_indexes_drop(path):
-                if not self.index_exists(index):
+                if pgcommands.index_exists(index):
                     print "KO %s is present" % (index['name'])
                 else:
                     print "OK %s is missing" % (index['name'])
-
-    def index_exists(self, index):
-        """Execute raw sql"""
-        cursor = connection.cursor()
-        qry = "SELECT count(indexname) FROM pg_indexes WHERE indexname = %s"
-        cursor.execute(qry, [index['name']])
-        row = cursor.fetchone()
-        cursor.close()
-        return row[0] == 1

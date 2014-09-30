@@ -1,0 +1,4 @@
+[{"name": "compo1",
+  "table": "django_sites",
+  "columns": ["domain", "name"]
+ }]

@@ -111,11 +111,7 @@ class SimpleTest(TestCase):
         List index to be created
         """
         fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                             '..',
-                             'demo',
-                             'django_json_dbindex_demo',
-                             'foobar')
-        print fpath
+                             'samples')
         res = util.list_indexes_create(fpath)
         self.assertEqual(len(res), 1)
 
@@ -124,11 +120,7 @@ class SimpleTest(TestCase):
         List index to be droped
         """
         fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                             '..',
-                             'demo',
-                             'django_json_dbindex_demo',
-                             'foobar')
-        print fpath
+                             'samples')
         res = util.list_indexes_drop(fpath)
         self.assertEqual(len(res), 2)
 
@@ -137,10 +129,6 @@ class SimpleTest(TestCase):
         List all indexes
         """
         fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                             '..',
-                             'demo',
-                             'django_json_dbindex_demo',
-                             'foobar')
-        print fpath
+                             'samples')
         res = util.list_indexes(fpath)
         self.assertEqual(len(res), 3)

@@ -18,35 +18,16 @@
 #
 
 from django.core.management.base import BaseCommand
-from django.conf import settings
-from django.db import connection
-import logging
 from ... import util
 
 
 class Command(BaseCommand):
     """
-    CREATE all indexes defined in jsdbindeX.json files
+    CREATE all indexes defined in dbindex_create.json files
     """
 
     def handle(self, *args, **options):
         """
         Create all indexes
         """
-        paths = util.get_app_paths(settings)
-        for path in paths:
-            for index in util.list_indexes_create(path):
-                if not self.index_exists(index):
-                    logging.info("Will create %s" % index['name'])
-                    cursor = connection.cursor()
-                    cursor.execute(index['cmd'])
-                    cursor.close()
-
-    def index_exists(self, index):
-        """Execute raw sql"""
-        cursor = connection.cursor()
-        qry = "SELECT count(indexname) FROM pg_indexes WHERE indexname = %s"
-        cursor.execute(qry, [index['name']])
-        row = cursor.fetchone()
-        cursor.close()
-        return row[0] == 1
+        util.command_create()

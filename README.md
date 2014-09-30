@@ -38,10 +38,18 @@ following contents
 
 [{"name": "django_site_composite_idx"},
   "table": "django_site",
-  "column": ["domain","name"],
+  "columns": ["domain","name"],
   "predicat": "WHERE id > 1000",
-  "unique": yes}]
+  "unique": yes,
+  "concurrently": false,
+  "using": "btree",     
+  "tablespace": "speedssd"}]
 ```
+
+Only fields, **name**, **table**, **columns** are mandatory.
+
+The **concurrently** option is set by default, do you really want your
+index to be created without this option ?
 
 Trying to create an existing index will not generate an error, only a
 logging at level notice will be raised.
@@ -53,8 +61,10 @@ Drop indexes
 Create a file in you app directory called `dbindex_drop.json` with
 following contents.
 
+```javascript
 [{"name": "django_site_composite_idx"},
  {"name": "django_site_domain_idx"}]
+```
 
 Only the name is required. In the above example two indexes will be
 dropped. Trying to drop a non existing index will not generate an

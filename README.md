@@ -16,7 +16,7 @@ Quick start
         'json_dbindex',
     )
 
-2. Run `python manage.py list_jsindex` to list all defined indexes.
+2. Run `python manage.py list_dbjsindex` to list all defined indexes.
 
 
 Management commands
@@ -39,17 +39,17 @@ following contents
 [{"name": "django_site_composite_idx"},
   "table": "django_site",
   "columns": ["domain","name"],
-  "predicat": "WHERE id > 1000",
+  "predicat": "id > 1000",
   "unique": true,
   "concurrently": false,
   "using": "btree",     
   "tablespace": "speedssd"}]
 ```
 
-Only fields, **name**, **table**, **columns** are mandatory.
+Only fields, **name**, **table** and **columns** are mandatory.
 
-The **concurrently** option is set by default, do you really want your
-index to be created without this option ?
+The **concurrently** option is set by default to *true*, do you really
+want your index to be created without this option ?
 
 Trying to create an existing index will not generate an error, only a
 logging at level notice will be raised.

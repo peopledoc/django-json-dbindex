@@ -28,6 +28,8 @@ following contents
   "table": "django_site",
   "column": ["domain","name"],
   "predicat": "WHERE id > 1000",
+  "using": "btree",
+  "database": "default",
   "unique": yes}]
 
 

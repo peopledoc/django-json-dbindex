@@ -4,6 +4,20 @@ Changelog
 This document describes changes between each past release. For information
 about future releases, check `milestones`_ and :doc:`/about/vision`.
 
+1.0.2 (2014-11-14)
+------------------
+
+- FIX create_index and drop_index when database is not set
+
+1.0.1 (2014-11-14)
+------------------
+
+- FIX index_exists
+
+1.0.0 (2014-11-14)
+------------------
+
+- support multi database
 
 0.0.2 (2014-09-29)
 ------------------

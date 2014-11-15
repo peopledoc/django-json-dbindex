@@ -17,13 +17,13 @@
 #   without specific prior written permission.
 #
 import logging
-from django.db import connection
+from django.db import connections
 
 
-def index_exists(index):
+def index_exists(index, database='default'):
     """Execute raw sql
     """
-    cursor = connection.cursor()
+    cursor = connections[database].cursor()
     qry = "SELECT COUNT(indexname) FROM pg_indexes WHERE indexname = %s"
     cursor.execute(qry, [index['name']])
     row = cursor.fetchone()
@@ -31,14 +31,15 @@ def index_exists(index):
     return row[0] == 1
 
 
-def execute_raw(sql):
+def execute_raw(sql, database='default'):
     """
     Execute a raw SQL command
 
     sql (string) : SQL command
+    database (string): the database name configured in settings
     """
     try:
-        cursor = connection.cursor()
+        cursor = connections[database].cursor()
         cursor.execute(sql)
         cursor.close()
         return 0
@@ -47,15 +48,20 @@ def execute_raw(sql):
         return 1
 
 
-def drop_index(index):
+def drop_index(index, database='default'):
     """
     Check if index exists and drop it
 
     index (dict) : index description
     """
-    if index_exists(index):
+    if 'database' in index:
+        database = index['database']
+
+    if index_exists(index, database):
         logging.info("Will drop %s" % index['name'])
-        res = execute_raw(index['cmd'])
+
+        res = execute_raw(index['cmd'], database)
+
         logging.info("%s dropped" % index['name'])
     else:
         res = 1
@@ -63,16 +69,24 @@ def drop_index(index):
     return res
 
 
-def create_index(index):
+def create_index(index, database='default'):
     """
     Create an index
 
     index (dict) : index description
+       {"name": "foo",
+        "database": "default",
+        "cmd": "CREATE INDEX foo_idx ON table (column)"
+       }
     """
-    if index_exists(index):
+    if 'database' in index:
+        database = index['database']
+
+    if index_exists(index, database):
         logging.info("%s still exists" % index['name'])
+        res = 1
     else:
         logging.info("Will create %s" % index['name'])
-        res = execute_raw(index['cmd'])
+        res = execute_raw(index['cmd'], database)
         logging.info("%s created" % index['name'])
     return res

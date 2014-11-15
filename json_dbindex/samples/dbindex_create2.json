@@ -1,0 +1,8 @@
+[{"name": "compo1",
+  "table": "django_sites",
+  "columns": ["domain", "name"],
+  "predicat": "WHERE id > 1000",
+  "unique": yes,
+  "using": "gist"
+}]
+

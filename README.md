@@ -42,7 +42,8 @@ following contents
   "predicat": "id > 1000",
   "unique": true,
   "concurrently": false,
-  "using": "btree",     
+  "using": "btree",
+  "database": "default",
   "tablespace": "speedssd"}]
 ```
 

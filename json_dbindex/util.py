@@ -35,11 +35,18 @@ def command_check():
     """
     for fpath in get_app_paths():
         for index in list_indexes_create(fpath):
-            if pgcommands.index_exists(index):
-                print "OK %s is present on %s" % (index['name'],
-                                                  index['table'])
+            if 'database' in index:
+                database = index['database']
             else:
-                print "KO %s is missing (must be present)" % (index['name'])
+                database = 'default'
+            if pgcommands.index_exists(index, database):
+                msg = "OK %s is present on %s in database %s"
+                print msg % (index['name'],
+                             index['table'],
+                             database)
+            else:
+                msg = "KO %s is missing (must be present) in database %s"
+                print msg % (index['name'], database)
 
         for index in list_indexes_drop(fpath):
             if pgcommands.index_exists(index):

@@ -108,9 +108,6 @@ ROOT_URLCONF = 'django_json_dbindex_demo.urls'
 WSGI_APPLICATION = 'django_json_dbindex_demo.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
@@ -119,7 +116,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'json_dbindex'
+    'json_dbindex',
+    'django_json_dbindex_demo.dummy',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -150,3 +148,8 @@ LOGGING = {
         },
     }
 }
+
+try:
+    from settings_local import *  # noqa
+except ImportError:
+    pass

@@ -6,6 +6,15 @@ Describe your database index in json files into your apps
 
 Detailed documentation is in the "docs" directory.
 
+Requirements
+------------
+
+You'll need the ``psycopg2`` package. You may want to install it via your system
+packages, but if you're working on a default virtualenv (no-site-packages),
+you'll have to install ``postgresql-server-dev-*``. Especially if you want to
+test the application via tox.
+
+
 Quick start
 -----------
 
@@ -70,3 +79,35 @@ following contents.
 Only the name is required. In the above example two indexes will be
 dropped. Trying to drop a non existing index will not generate an
 error, only a logging at level notice will be raised.
+
+
+Testing the app
+---------------
+
+You'll need to install tox (globally or, preferrably in a virtualenv).
+
+The python package ``psycopg2`` must be available.
+
+You may want to setup a postgresql server somewhere. Its credentials may live
+in the ``/django-json-dbindex/demo/django_json_dbindex_demo/settings_local.py``
+
+Example:
+
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'json_dbindex',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+```
+
+
+You'll need to create at least one "json_dbindex" database on your server. Or
+name it as you want.
+
+Simply run "tox" to execute tests and other builds.

@@ -38,6 +38,7 @@ PACKAGES = ['json_dbindex']
 REQUIREMENTS = [
     'Django<1.7',
     'setuptools',
+    'psycopg2',
 ]
 ENTRY_POINTS = {}
 TEST_REQUIREMENTS = []

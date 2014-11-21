@@ -41,18 +41,16 @@ def command_check():
                 database = 'default'
             if pgcommands.index_exists(index, database):
                 msg = "OK %s is present on %s in database %s"
-                print msg % (index['name'],
-                             index['table'],
-                             database)
+                sys.stdout.write(msg % (index['name'], index['table'], database))
             else:
                 msg = "KO %s is missing (must be present) in database %s"
-                print msg % (index['name'], database)
+                sys.stdout.write(msg % (index['name'], database))
 
         for index in list_indexes_drop(fpath):
             if pgcommands.index_exists(index):
-                print "KO %s is present (must be dropped)" % (index['name'])
+                sys.stdout.write("KO %s is present (must be dropped)" % (index['name']))
             else:
-                print "OK %s is missing" % (index['name'])
+                sys.stdout.write("OK %s is missing" % (index['name']))
 
 
 def command_list():

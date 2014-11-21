@@ -36,7 +36,7 @@ following contents
 
 ```javascript
 
-[{"name": "django_site_composite_idx"},
+[{"name": "django_site_composite_idx",
   "table": "django_site",
   "columns": ["domain","name"],
   "predicat": "id > 1000",

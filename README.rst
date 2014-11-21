@@ -24,7 +24,7 @@ Create indexes
 Create a file in you app directory called `dbindex_create.json` with
 following contents
 
-[{"name": "django_site_composite_idx"},
+[{"name": "django_site_composite_idx",
   "table": "django_site",
   "column": ["domain","name"],
   "predicat": "WHERE id > 1000",

@@ -22,6 +22,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(data_dir, 'db.sqlite')
+    },
+    'foofault': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(data_dir, 'db.sqlite')
     }
 }
 

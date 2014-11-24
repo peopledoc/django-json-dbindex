@@ -4,6 +4,11 @@ Changelog
 This document describes changes between each past release. For information
 about future releases, check `milestones`_ and :doc:`/about/vision`.
 
+1.1.0 (2014-11-24)
+------------------
+
+- Thanks to Bruno Bord, management commands now use stdout instead of print
+
 1.0.2 (2014-11-14)
 ------------------
 

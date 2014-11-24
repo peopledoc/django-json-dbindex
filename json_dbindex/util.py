@@ -33,6 +33,7 @@ def command_check():
     """
     Check indexes
     """
+    output = []
     for fpath in get_app_paths():
         for index in list_indexes_create(fpath):
             if 'database' in index:
@@ -41,31 +42,32 @@ def command_check():
                 database = 'default'
             if pgcommands.index_exists(index, database):
                 msg = "OK %s is present on %s in database %s"
-                print msg % (index['name'],
-                             index['table'],
-                             database)
+                output.append(msg % (index['name'], index['table'], database))
             else:
                 msg = "KO %s is missing (must be present) in database %s"
-                print msg % (index['name'], database)
+                output.append(msg % (index['name'], database))
 
         for index in list_indexes_drop(fpath):
             if pgcommands.index_exists(index):
-                print "KO %s is present (must be dropped)" % (index['name'])
+                output.append("KO %s is present (must be dropped)"
+                              % (index['name']))
             else:
-                print "OK %s is missing" % (index['name'])
+                output.append("OK %s is missing" % (index['name']))
+    return "\n".join(output)
 
 
 def command_list():
     """
     List all indexes
     """
+    output = []
     for fpath in get_app_paths():
         indexes = list_indexes(fpath)
         if len(indexes):
-            sys.stdout.write("-- Found %d index in %s\n" % (len(indexes),
-                                                            fpath))
+            output.append("-- Found %d index in %s\n" % (len(indexes), fpath))
             for index in indexes:
-                sys.stdout.write("%s\n" % (index['cmd']))
+                output.append("%s\n" % (index['cmd']))
+    return "\n".join(output)
 
 
 def command_drop():

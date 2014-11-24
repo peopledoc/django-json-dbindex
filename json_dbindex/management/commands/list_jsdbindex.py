@@ -27,4 +27,6 @@ class Command(BaseCommand):
         """List indexes command on stdout
         Read the table book without TextField
         """
-        util.command_list()
+        output = util.command_list()
+        if output:
+            self.stdout.write(output)

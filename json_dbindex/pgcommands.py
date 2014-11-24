@@ -43,8 +43,8 @@ def execute_raw(sql, database='default'):
         cursor.execute(sql)
         cursor.close()
         return 0
-    except:
-        logging.error('Cant execute %s' % (sql))
+    except Exception, e:
+        logging.error('Cant execute %s -- Exception raised %s' % (sql, e))
         return 1
 
 

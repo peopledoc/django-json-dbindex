@@ -7,7 +7,6 @@
     "unique": true,
     "concurrently": false,
     "using": "btree",
-    "database": "default",
-    "tablespace": "speedssd"
+    "database": "default"
     }
 ]

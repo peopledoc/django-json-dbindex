@@ -49,7 +49,8 @@ def command_check():
 
         for index in list_indexes_drop(fpath):
             if pgcommands.index_exists(index):
-                output.append("KO %s is present (must be dropped)" % (index['name']))
+                output.append("KO %s is present (must be dropped)"
+                              % (index['name']))
             else:
                 output.append("OK %s is missing" % (index['name']))
     return "\n".join(output)
@@ -59,13 +60,14 @@ def command_list():
     """
     List all indexes
     """
+    output = []
     for fpath in get_app_paths():
         indexes = list_indexes(fpath)
         if len(indexes):
-            sys.stdout.write("-- Found %d index in %s\n" % (len(indexes),
-                                                            fpath))
+            output.append("-- Found %d index in %s\n" % (len(indexes), fpath))
             for index in indexes:
-                sys.stdout.write("%s\n" % (index['cmd']))
+                output.append("%s\n" % (index['cmd']))
+    return "\n".join(output)
 
 
 def command_drop():

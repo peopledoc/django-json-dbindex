@@ -28,4 +28,6 @@ class Command(BaseCommand):
         """
         Read the table book without TextField
         """
-        util.command_check()
+        output = util.command_check()
+        if output:
+            self.stdout.write(output)

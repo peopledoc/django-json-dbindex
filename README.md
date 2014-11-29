@@ -1,8 +1,10 @@
+[![Documentation Status](https://readthedocs.org/projects/django-json-dbindex/badge/?version=latest)](https://readthedocs.org/projects/django-json-dbindex/?badge=latest)
+
 ===================
 django-json-dbindex
 ===================
 
-Describe your database index in json files into your apps
+Describe your database indexes in json files into your apps directory.
 
 Detailed documentation is in the "docs" directory.
 

@@ -26,7 +26,7 @@ following contents
 
 [{"name": "django_site_composite_idx",
   "table": "django_site",
-  "column": ["domain","name"],
+  "columns": ["domain","name"],
   "predicat": "WHERE id > 1000",
   "using": "btree",
   "database": "default",

@@ -60,6 +60,10 @@ following contents
 
 Only fields, **name**, **table** and **columns** are mandatory.
 
+```shell
+$ python manage.py create_jsdbindex
+```
+
 The **concurrently** option is set by default to *true*, do you really
 want your index to be created without this option ?
 
@@ -81,6 +85,10 @@ following contents.
 Only the name is required. In the above example two indexes will be
 dropped. Trying to drop a non existing index will not generate an
 error, only a logging at level notice will be raised.
+
+```shell
+$ python manage.py drop_jsdbindex
+```
 
 
 Testing the app

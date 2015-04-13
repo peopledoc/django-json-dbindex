@@ -1,6 +1,5 @@
 [![Documentation Status](https://readthedocs.org/projects/django-json-dbindex/badge/?version=latest)](https://readthedocs.org/projects/django-json-dbindex/?badge=latest)
-
-[![Build Status](https://travis-ci.org/rodo/django-json-dbindex.svg)](https://travis-ci.org/rodo/django-json-dbindex)
+[![Build Status](https://travis-ci.org/novafloss/django-json-dbindex.svg)](https://travis-ci.org/novafloss/django-json-dbindex)
 
 ===================
 django-json-dbindex

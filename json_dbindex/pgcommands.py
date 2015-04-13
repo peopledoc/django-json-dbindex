@@ -99,9 +99,6 @@ def create_extensions(extensions, database='default'):
     """
     Create all extensions
     """
-    if 'database' in index:
-        database = index['database']
-
     for extension in extensions:
         cmd = "CREATE EXTENSION IF NOT EXISTS %s"
         logging.info("Will create extension %s on database %s" % (extension, database))

@@ -158,7 +158,32 @@ class SimpleTest(TestCase):
         self.assertEqual(len(res), 3)
 
 
-    def test_list_extentions(self):
+    def test_list_extensions_multidb(self):
+        """
+        List all extensions
+        """
+        idx = [{'name': 'compo1',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1',
+                'extension': 'unaccent'},
+               {'name': 'compo2',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1',
+                'extension': 'unaccent',
+                'database': 'slave'}]
+
+        extensions = util.list_extensions(idx)
+
+        self.assertEqual(len(extensions), 2)
+        self.assertTrue('default' in extensions.keys())
+        self.assertTrue('slave' in extensions.keys())
+        self.assertEqual(extensions['default'], ['unaccent'])
+        self.assertEqual(extensions['slave'], ['unaccent'])
+
+
+    def test_list_extensions_complex(self):
         """
         List all extensions
         """
@@ -181,9 +206,10 @@ class SimpleTest(TestCase):
                 'table': 'editors',
                 'columns': ['id', 'name'],
                 'tablespace': 'ssd1'}]
-        
+
         extensions = util.list_extensions(idx)
 
-        self.assertEqual(len(extensions), 2)
-        self.assertTrue('unaccent' in extensions)
-        self.assertTrue('pg_trgm' in extensions)
+        self.assertEqual(len(extensions), 1)
+        self.assertEqual(len(extensions['default']), 2)
+        self.assertTrue('unaccent' in extensions['default'])
+        self.assertTrue('pg_trgm' in extensions['default'])

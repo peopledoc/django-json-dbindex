@@ -11,8 +11,9 @@
     },
     {
         "name": "django_site_name_idx",
-        "table": "django_site",
+        "table": "dummy_duck",
         "columns": ["name"],
         "using": "gist",
-        "opclass": "gist_trgm_ops"}    
+        "opclass": "gist_trgm_ops",
+        "extension": "pg_trgm"}
 ]

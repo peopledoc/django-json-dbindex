@@ -41,9 +41,9 @@ def execute_raw(sql, database='default', parms=None):
     try:
         cursor = connections[database].cursor()
         if parms is not None:
-            cursor.execute(sql)
+            cursor.execute(sql, parms)
         else:
-            cursor.execute(sql, parms)            
+            cursor.execute(sql)
         cursor.close()
         return 0
     except Exception, e:

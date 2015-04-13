@@ -2,6 +2,7 @@
 django-json-dbindex tests
 """
 import os
+import json
 import util
 from django.test import TestCase
 
@@ -32,6 +33,14 @@ class SimpleTest(TestCase):
         idx = {'foo': 'bar',
                'columns': ['foobar', 'id']}
         res = "(foobar,id)"
+        self.assertEqual(util.sql_columns(idx), res)
+
+    def test_sql_columns_operator(self):
+        """
+        Build the column part of index, with operator
+        """
+        idx = json.loads('{"foo": "bar", "columns": [{"foobar": "gist_trgm_ops"}]}')
+        res = "(foobar gist_trgm_ops)"
         self.assertEqual(util.sql_columns(idx), res)
 
     def test_sql_using(self):
@@ -91,13 +100,13 @@ class SimpleTest(TestCase):
         """
         idx = {'name': 'compo1',
                'table': 'editors',
-               'columns': [{'name': 'gist_trgm_ops'}],
-               'tablespace': 'ssd1',
+               'columns': [{'name': 'gist_trgm_ops'},
+                           {'species': 'gist_trgm_ops'}],
                'using': 'GIST'}
 
         res = " ".join(["CREATE INDEX CONCURRENTLY compo1",
-                        "ON editors USING GIST (name gist_trgm_ops)",
-                        "TABLESPACE ssd1"])
+                        "ON editors USING GIST",
+                        "(name gist_trgm_ops,species gist_trgm_ops)"])
         self.assertEqual(util.sql_create_from_json(idx), res)
 
     def test_sql_drop_from_json(self):
@@ -158,7 +167,32 @@ class SimpleTest(TestCase):
         self.assertEqual(len(res), 3)
 
 
-    def test_list_extentions(self):
+    def test_list_extensions_multidb(self):
+        """
+        List all extensions
+        """
+        idx = [{'name': 'compo1',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1',
+                'extension': 'unaccent'},
+               {'name': 'compo2',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1',
+                'extension': 'unaccent',
+                'database': 'slave'}]
+
+        extensions = util.list_extensions(idx)
+
+        self.assertEqual(len(extensions), 2)
+        self.assertTrue('default' in extensions.keys())
+        self.assertTrue('slave' in extensions.keys())
+        self.assertEqual(extensions['default'], ['unaccent'])
+        self.assertEqual(extensions['slave'], ['unaccent'])
+
+
+    def test_list_extensions_complex(self):
         """
         List all extensions
         """
@@ -181,9 +215,10 @@ class SimpleTest(TestCase):
                 'table': 'editors',
                 'columns': ['id', 'name'],
                 'tablespace': 'ssd1'}]
-        
+
         extensions = util.list_extensions(idx)
 
-        self.assertEqual(len(extensions), 2)
-        self.assertTrue('unaccent' in extensions)
-        self.assertTrue('pg_trgm' in extensions)
+        self.assertEqual(len(extensions), 1)
+        self.assertEqual(len(extensions['default']), 2)
+        self.assertTrue('unaccent' in extensions['default'])
+        self.assertTrue('pg_trgm' in extensions['default'])

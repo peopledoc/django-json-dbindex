@@ -88,8 +88,8 @@ def command_create():
     for fpath in get_app_paths():
         indexes = list_indexes_create(fpath)
         extensions = list_extensions(indexes)
-        for extension in extensions:
-            pgcommands.create_extensions(index)
+        for database in extensions.keys():
+            pgcommands.create_extensions(extensions[database], database)
 
         for index in indexes:
             pgcommands.create_index(index)
@@ -220,7 +220,7 @@ def sql_columns(index):
         if type(column) is dict:
             columns.append("%s %s" % (column.keys()[0],
                                       column.values()[0]))
-        elif type(column) is str:
+        else:
             columns.append(column)
 
     return "(%s)" % (",".join(columns))
@@ -276,10 +276,16 @@ def list_extensions(indexes):
 
     Return : array
     """
-    extensions = []
+    extensions = {}
     for index in indexes:
         ext = index.get('extension')
+        database = index.get('database', 'default')
         if ext is not None:
-            extensions.append(ext)
+            if database in extensions.keys():
+                exts = extensions[database]
+                exts.append(ext)
+                extensions[database] = list(set(exts))
+            else:
+                extensions[database] = [ext]
 
-    return set(extensions)
+    return extensions

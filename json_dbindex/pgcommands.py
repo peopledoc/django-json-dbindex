@@ -41,9 +41,9 @@ def execute_raw(sql, database='default', parms=None):
     try:
         cursor = connections[database].cursor()
         if parms is not None:
-            cursor.execute(sql)
+            cursor.execute(sql, parms)
         else:
-            cursor.execute(sql, parms)            
+            cursor.execute(sql)
         cursor.close()
         return 0
     except Exception, e:
@@ -99,14 +99,10 @@ def create_extensions(extensions, database='default'):
     """
     Create all extensions
     """
-    if 'database' in index:
-        database = index['database']
-
     for extension in extensions:
-        cmd = "CREATE EXTENSION IF NOT EXISTS %s"
+        cmd = "CREATE EXTENSION IF NOT EXISTS %s" % (extension)
         logging.info("Will create extension %s on database %s" % (extension, database))
         res = execute_raw(cmd,
-                          database=database,
-                          parms=[extension])
+                          database=database)
         logging.info("%s created" % extension)
     return res

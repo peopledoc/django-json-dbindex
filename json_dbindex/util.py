@@ -89,7 +89,7 @@ def command_create():
         indexes = list_indexes_create(fpath)
         extensions = list_extensions(indexes)
         for extension in extensions:
-            pgcommands.create_extension(index)
+            pgcommands.create_extensions(index)
 
         for index in indexes:
             pgcommands.create_index(index)

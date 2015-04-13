@@ -269,11 +269,18 @@ def sql_simple(index, key, prefix):
 def list_extensions(indexes):
     """
     List extensions required in indexes
+
+    Return a list with unique extension present in all indexes
+
+    indexes (array)
+
+    Return : array
     """
-    extensions = {}
+    extensions = []
     for index in indexes:
         ext = index.get('extension')
         if ext is not None:
-            extensions[ext] = ext
+            extensions.append(ext)
 
-    return extensions.keys()
+    return set(extensions)
+

@@ -101,7 +101,8 @@ def create_extensions(extensions, database='default'):
     """
     for extension in extensions:
         cmd = "CREATE EXTENSION IF NOT EXISTS %s" % (extension)
-        logging.info("Will create extension %s on database %s" % (extension, database))
+        logging.info("Will create extension %s on database %s" % (extension,
+                                                                  database))
         res = execute_raw(cmd,
                           database=database)
         logging.info("%s created" % extension)

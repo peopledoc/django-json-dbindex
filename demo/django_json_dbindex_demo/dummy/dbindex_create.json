@@ -8,11 +8,5 @@
         "concurrently": false,
         "using": "btree",
         "database": "default"
-    },
-    {
-        "name": "django_site_name_idx",
-        "table": "django_site",
-        "columns": ["name"],
-        "using": "gist",
-        "opclass": "gist_trgm_ops"}    
+    }
 ]

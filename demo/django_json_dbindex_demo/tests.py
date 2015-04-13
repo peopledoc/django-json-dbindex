@@ -1,10 +1,11 @@
 from StringIO import StringIO
-
 from django.test import TestCase
+from django.test import SimpleTestCase
+from django.db import transaction
 from django.core.management import call_command
 
 
-class TestCommands(TestCase):
+class TestCommands(SimpleTestCase):
 
     def test_check(self):
         out = StringIO()
@@ -31,4 +32,4 @@ class TestCommands(TestCase):
         out.seek(0)
         value = out.read()
         self.assertTrue(value)
-        self.assertIn('Found 2 index', value)
+        self.assertIn('Found 1 index', value)

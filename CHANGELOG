@@ -4,6 +4,14 @@ Changelog
 This document describes changes between each past release. For information
 about future releases, check `milestones`_ and :doc:`/about/vision`.
 
+
+1.2.0rc1 (2015-04-13)
+---------------------
+
+- add opclass option to support operator class like Trigram (or Trigraph)
+  concepts
+- create postgresql extensions defined in indexes
+
 1.1.1 (2015-01-13)
 ------------------
 

@@ -283,4 +283,3 @@ def list_extensions(indexes):
             extensions.append(ext)
 
     return set(extensions)
-

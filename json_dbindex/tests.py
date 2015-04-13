@@ -85,6 +85,21 @@ class SimpleTest(TestCase):
                         "TABLESPACE ssd1"])
         self.assertEqual(util.sql_create_from_json(idx), res)
 
+    def test_sql_create_from_json_opclass(self):
+        """
+        Build the column part of index with an operator class
+        """
+        idx = {'name': 'compo1',
+               'table': 'editors',
+               'columns': [{'name': 'gist_trgm_ops'}],
+               'tablespace': 'ssd1',
+               'using': 'GIST'}
+
+        res = " ".join(["CREATE INDEX CONCURRENTLY compo1",
+                        "ON editors USING GIST (name gist_trgm_ops)",
+                        "TABLESPACE ssd1"])
+        self.assertEqual(util.sql_create_from_json(idx), res)
+
     def test_sql_drop_from_json(self):
         """
         Build the column part of index
@@ -141,3 +156,34 @@ class SimpleTest(TestCase):
                              'samples')
         res = util.list_indexes(fpath)
         self.assertEqual(len(res), 3)
+
+
+    def test_list_extentions(self):
+        """
+        List all extensions
+        """
+        idx = [{'name': 'compo1',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1',
+                'extension': 'unaccent'},
+               {'name': 'compo2',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1',
+                'extension': 'unaccent'},
+               {'name': 'compo3',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1',
+                'extension': 'pg_trgm'},
+               {'name': 'compo4',
+                'table': 'editors',
+                'columns': ['id', 'name'],
+                'tablespace': 'ssd1'}]
+        
+        extensions = util.list_extensions(idx)
+
+        self.assertEqual(len(extensions), 2)
+        self.assertTrue('unaccent' in extensions)
+        self.assertTrue('pg_trgm' in extensions)

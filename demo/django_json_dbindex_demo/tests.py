@@ -31,4 +31,4 @@ class TestCommands(TestCase):
         out.seek(0)
         value = out.read()
         self.assertTrue(value)
-        self.assertIn('Found 1 index', value)
+        self.assertIn('Found 2 index', value)

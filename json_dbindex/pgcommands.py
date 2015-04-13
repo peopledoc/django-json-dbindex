@@ -31,7 +31,7 @@ def index_exists(index, database='default'):
     return row[0] == 1
 
 
-def execute_raw(sql, database='default'):
+def execute_raw(sql, database='default', parms=None):
     """
     Execute a raw SQL command
 
@@ -40,7 +40,10 @@ def execute_raw(sql, database='default'):
     """
     try:
         cursor = connections[database].cursor()
-        cursor.execute(sql)
+        if parms is not None:
+            cursor.execute(sql)
+        else:
+            cursor.execute(sql, parms)            
         cursor.close()
         return 0
     except Exception, e:
@@ -89,4 +92,21 @@ def create_index(index, database='default'):
         logging.info("Will create %s" % index['name'])
         res = execute_raw(index['cmd'], database)
         logging.info("%s created" % index['name'])
+    return res
+
+
+def create_extensions(extensions, database='default'):
+    """
+    Create all extensions
+    """
+    if 'database' in index:
+        database = index['database']
+
+    for extension in extensions:
+        cmd = "CREATE EXTENSION IF NOT EXISTS %s"
+        logging.info("Will create extension %s on database %s" % (extension, database))
+        res = execute_raw(cmd,
+                          database=database,
+                          parms=[extension])
+        logging.info("%s created" % extension)
     return res

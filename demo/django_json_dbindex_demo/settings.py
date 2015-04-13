@@ -20,8 +20,9 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(data_dir, 'db.sqlite')
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_jsondbindex',
+        'USER': 'postgres'
     }
 }
 

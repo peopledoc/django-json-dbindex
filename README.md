@@ -58,6 +58,16 @@ following contents
   "tablespace": "speedssd"}]
 ```
 
+or with an operator class on PostgreSQL for example
+
+```
+[{"name": "django_site_composite_idx",
+  "table": "django_site",
+  "columns": [{"name": "gist_trgm_ops"],
+  "using": "GIST",
+  "extension": "pg_trgm"}]
+```
+
 Only fields, **name**, **table** and **columns** are mandatory.
 
 ```shell

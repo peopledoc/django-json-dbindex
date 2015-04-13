@@ -220,7 +220,7 @@ def sql_columns(index):
         if type(column) is dict:
             columns.append("%s %s" % (column.keys()[0],
                                       column.values()[0]))
-        elif type(column) is str:
+        else:
             columns.append(column)
 
     return "(%s)" % (",".join(columns))

@@ -2,6 +2,7 @@
 django-json-dbindex tests
 """
 import os
+import json
 import util
 from django.test import TestCase
 
@@ -32,6 +33,14 @@ class SimpleTest(TestCase):
         idx = {'foo': 'bar',
                'columns': ['foobar', 'id']}
         res = "(foobar,id)"
+        self.assertEqual(util.sql_columns(idx), res)
+
+    def test_sql_columns_operator(self):
+        """
+        Build the column part of index, with operator
+        """
+        idx = json.loads('{"foo": "bar", "columns": [{"foobar": "gist_trgm_ops"}]}')
+        res = "(foobar gist_trgm_ops)"
         self.assertEqual(util.sql_columns(idx), res)
 
     def test_sql_using(self):
@@ -91,13 +100,13 @@ class SimpleTest(TestCase):
         """
         idx = {'name': 'compo1',
                'table': 'editors',
-               'columns': [{'name': 'gist_trgm_ops'}],
-               'tablespace': 'ssd1',
+               'columns': [{'name': 'gist_trgm_ops'},
+                           {'species': 'gist_trgm_ops'}],
                'using': 'GIST'}
 
         res = " ".join(["CREATE INDEX CONCURRENTLY compo1",
-                        "ON editors USING GIST (name gist_trgm_ops)",
-                        "TABLESPACE ssd1"])
+                        "ON editors USING GIST",
+                        "(name gist_trgm_ops,species gist_trgm_ops)"])
         self.assertEqual(util.sql_create_from_json(idx), res)
 
     def test_sql_drop_from_json(self):

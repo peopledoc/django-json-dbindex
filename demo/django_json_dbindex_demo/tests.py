@@ -15,14 +15,6 @@ class TestCommands(SimpleTestCase):
         self.assertTrue(value)
         self.assertTrue(value.startswith('KO'))
 
-    def test_list(self):
-        out = StringIO()
-        call_command('list_jsdbindex', stdout=out)
-        out.seek(0)
-        value = out.read()
-        self.assertTrue(value)
-        self.assertIn('Found 2 index', value)
-
     def test_create(self):
         # Create index first
         call_command('create_jsdbindex')
@@ -33,3 +25,11 @@ class TestCommands(SimpleTestCase):
         value = out.read()
         self.assertTrue(value)
         self.assertTrue(value.startswith('OK'))
+
+    def test_list(self):
+        out = StringIO()
+        call_command('list_jsdbindex', stdout=out)
+        out.seek(0)
+        value = out.read()
+        self.assertTrue(value)
+        self.assertIn('Found 1 index', value)

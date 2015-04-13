@@ -39,7 +39,8 @@ class SimpleTest(TestCase):
         """
         Build the column part of index, with operator
         """
-        idx = json.loads('{"foo": "bar", "columns": [{"foobar": "gist_trgm_ops"}]}')
+        jstr = '{"foo": "bar", "columns": [{"foobar": "gist_trgm_ops"}]}'
+        idx = json.loads(jstr)
         res = "(foobar gist_trgm_ops)"
         self.assertEqual(util.sql_columns(idx), res)
 
@@ -166,7 +167,6 @@ class SimpleTest(TestCase):
         res = util.list_indexes(fpath)
         self.assertEqual(len(res), 3)
 
-
     def test_list_extensions_multidb(self):
         """
         List all extensions
@@ -190,7 +190,6 @@ class SimpleTest(TestCase):
         self.assertTrue('slave' in extensions.keys())
         self.assertEqual(extensions['default'], ['unaccent'])
         self.assertEqual(extensions['slave'], ['unaccent'])
-
 
     def test_list_extensions_complex(self):
         """

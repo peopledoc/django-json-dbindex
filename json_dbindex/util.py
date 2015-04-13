@@ -86,7 +86,12 @@ def command_create():
     Create all indexes
     """
     for fpath in get_app_paths():
-        for index in list_indexes_create(fpath):
+        indexes = list_indexes_create(fpath)
+        extensions = list_extensions(indexes)
+        for extension in extensions:
+            pgcommands.create_extension(index)
+
+        for index in indexes:
             pgcommands.create_index(index)
 
 
@@ -209,7 +214,16 @@ def sql_columns(index):
 
     return : string
     """
-    return "(%s)" % (",".join(index['columns']))
+    columns = []
+
+    for column in index['columns']:
+        if type(column) is dict:
+            columns.append("%s %s" % (column.keys()[0],
+                                      column.values()[0]))
+        elif type(column) is str:
+            columns.append(column)
+
+    return "(%s)" % (",".join(columns))
 
 
 def sql_using(index):
@@ -241,7 +255,6 @@ def sql_tablespace(index):
 
 def sql_simple(index, key, prefix):
     """
-    Is the index predicat or not
 
     return : string
     """
@@ -251,3 +264,22 @@ def sql_simple(index, key, prefix):
             res = "%s %s" % (prefix, index[key])
 
     return res
+
+
+def list_extensions(indexes):
+    """
+    List extensions required in indexes
+
+    Return a list with unique extension present in all indexes
+
+    indexes (array)
+
+    Return : array
+    """
+    extensions = []
+    for index in indexes:
+        ext = index.get('extension')
+        if ext is not None:
+            extensions.append(ext)
+
+    return set(extensions)

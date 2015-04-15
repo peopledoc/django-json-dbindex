@@ -30,7 +30,7 @@ Quick start
         'json_dbindex',
     )
 
-2. Run `python manage.py list_dbjsindex` to list all defined indexes.
+2. Run `python manage.py list_jsdbindex` to list all defined indexes.
 
 
 Management commands

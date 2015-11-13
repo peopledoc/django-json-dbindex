@@ -23,7 +23,7 @@ LICENSE = 'BSD'
 URL = 'https://django-json-dbindex.readthedocs.org/'
 CLASSIFIERS = [
     'Programming Language :: Python :: 2.7',
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 5 - Production/Stable',
     'Framework :: Django',
     'License :: OSI Approved :: BSD License',
 ]

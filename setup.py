@@ -36,7 +36,7 @@ KEYWORDS = [
 ]
 PACKAGES = ['json_dbindex']
 REQUIREMENTS = [
-    'Django<1.8',
+    'Django>=1.7',
     'setuptools',
     'psycopg2',
 ]

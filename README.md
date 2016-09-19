@@ -2,6 +2,10 @@
 [![Build Status](https://travis-ci.org/novafloss/django-json-dbindex.svg)](https://travis-ci.org/novafloss/django-json-dbindex)
 [![Coverage Status](https://coveralls.io/repos/novafloss/django-json-dbindex/badge.svg)](https://coveralls.io/r/novafloss/django-json-dbindex)
 
+**Project not maintained**, this project was created at PoepleDoc to
+  be used between a short time as a transition tool, it is not used
+  anymore and so not maintain.
+
 
 ===================
 django-json-dbindex
